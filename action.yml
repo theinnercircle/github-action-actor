@@ -1,0 +1,18 @@
+name: Get actor details
+description: Some automation
+outputs:
+  name:
+    description: Name
+    value: ${{ steps.actor.outputs.name }}
+runs:
+  using: "composite"
+  steps:
+  - name: Get actor details
+    uses: actions/github-script@v6
+    id: actor
+    with:
+      script: |
+        const user = await github.rest.users.getByUsername({
+          username: context.actor,
+        });
+        core.setOutput('name', user.data.name);
